@@ -34,7 +34,13 @@ def print(students)
   incrementer = 0
   while incrementer < students.length
       counter = students.index(students[incrementer])+1
-      puts "#{counter}. #{students[incrementer][:name]}\n\tOriginally from #{students[incrementer][:birthplace]}.\n\tHeight: #{students[incrementer][:height]}\n\tHobbies: #{students[incrementer][:hobbies]}\n\t(#{students[incrementer][:cohort]} cohort)"
+      width = 50
+      spacer = ' '
+      puts "#{counter}. #{students[incrementer][:name]}"
+      puts " Originally from #{students[incrementer][:birthplace]} ".center(width,spacer)
+      puts " Height: #{students[incrementer][:height]} ".center(width,spacer)
+      puts " Hobbies: #{students[incrementer][:hobbies]} ".center(width,spacer)
+      puts " (#{students[incrementer][:cohort]} cohort) ".center(width,spacer)
       incrementer += 1
   end
 end
