@@ -1,3 +1,7 @@
+$months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
+$linewidth = 50
+$linespacer = ' '
+
 def defaulter(str) # function which gets user input and defaults it if empty
   str = gets.chomp
   if str.empty?
@@ -17,9 +21,8 @@ def input_students
   while !name.empty? do
     # add the student hash to the array
     puts "Please enter this student's cohort."
-    months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
     cohort = defaulter(cohort).downcase.to_sym # this defaulter function does the gets.chomp and checks the default value in one go
-    unless months.include? cohort
+    while !$months.include? cohort
       puts "Please try again.\nEnter a month for the student's cohort"
       cohort = defaulter(cohort).downcase.to_sym
     end
@@ -45,18 +48,33 @@ def print_header
    puts "----------"
 end
 
-def print(students)
-  incrementer = 0
-  while incrementer < students.length
-      counter = students.index(students[incrementer])+1
-      width = 50
-      spacer = ' '
-      puts "#{counter}. #{students[incrementer][:name]}"
-      puts " Birthplace: #{students[incrementer][:birthplace]} ".center(width,spacer)
-      puts " Height: #{students[incrementer][:height]} ".center(width,spacer)
-      puts " Hobbies: #{students[incrementer][:hobbies]} ".center(width,spacer)
-      puts " Cohort: #{students[incrementer][:cohort]} ".center(width,spacer)
-      incrementer += 1
+# Not using this function anymore.
+#def print(students)
+#  incrementer = 0
+#  while incrementer < students.length
+#      counter = students.index(students[incrementer])+1
+#      puts "#{counter}. #{students[incrementer][:name]}"
+#      puts " Birthplace: #{students[incrementer][:birthplace]} ".center($linewidth,$linespacer)
+#      puts " Height: #{students[incrementer][:height]} ".center($linewidth,$linespacer)
+#      puts " Hobbies: #{students[incrementer][:hobbies]} ".center($linewidth,$linespacer)
+#      puts " Cohort: #{students[incrementer][:cohort]} ".center($linewidth,$linespacer)
+#      incrementer += 1
+#  end
+#end
+
+def printbymonth(students)
+  $months.map do |month|
+    students.map do |student|
+      unless !student[:cohort].to_s.include? month.to_s
+        incrementer = 0
+        puts "#{incrementer+1}. #{student[:name]}"
+        puts " Birthplace: #{student[:birthplace]} ".center($linewidth,$linespacer)
+        puts " Height: #{student[:height]} ".center($linewidth,$linespacer)
+        puts " Hobbies: #{student[:hobbies]} ".center($linewidth,$linespacer)
+        puts " Cohort: #{student[:cohort].capitalize} ".center($linewidth,$linespacer)
+        incrementer += 1
+      end
+    end
   end
 end
 
@@ -67,5 +85,6 @@ end
 # nothing happens 'til we call methods
 students = input_students
 print_header
-print(students)
+puts "Ordered By Month:"
+printbymonth(students)
 print_footer(students)
