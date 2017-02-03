@@ -3,7 +3,7 @@ $linewidth = 50
 $linespacer = ' '
 
 def defaulter(str) # function which gets user input and defaults it if empty
-  str = gets.chomp
+  str = gets[0..-2] # alternative to gets.chomp using range selection, from index 0 to the last-but-one character (removes the last return)
   if str.empty?
     str = "None provided"
   end
@@ -16,7 +16,7 @@ def input_students
   # create empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets[0..-2]
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
@@ -41,7 +41,7 @@ def input_students
     # get another name from the user
     puts "Please enter another student's name"
     puts "To quit, just hit return."
-    name = gets.chomp
+    name = gets[0..-2]
   end
   # return array of students
   students
