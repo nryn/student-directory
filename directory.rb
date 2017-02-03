@@ -33,7 +33,11 @@ def input_students
     puts "Please enter this student's country of birth."
     birthplace = defaulter(birthplace)
     students << {name: name, cohort: cohort, height: height, hobbies: hobbies, birthplace: birthplace}
-    puts "Now we have #{students.count} students"
+    print "\nNow we have #{students.count} student"
+    unless students.length == 1
+      print "s"
+    end;
+    puts "."
     # get another name from the user
     puts "Please enter another student's name"
     puts "To quit, just hit return."
@@ -79,7 +83,11 @@ def printbymonth(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  print "\nOverall, we have #{students.count} great student"
+  unless students.length == 1
+    print "s"
+  end
+  puts "."
 end
 
 # nothing happens 'til we call methods
