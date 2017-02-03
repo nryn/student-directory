@@ -12,7 +12,7 @@ end
 
 def input_students
   puts "Please enter the name of a student"
-  puts "To quit, just hit return twice."
+  puts "To quit, just hit return."
   # create empty array
   students = []
   # get the first name
@@ -90,9 +90,10 @@ def print_footer(students)
   puts "."
 end
 
-# nothing happens 'til we call methods
 students = input_students
-print_header
-puts "Ordered By Month:"
-printbymonth(students)
-print_footer(students)
+if students.length != 0
+  print_header
+  puts "Ordered By Month:"
+  printbymonth(students)
+  print_footer(students)
+end
