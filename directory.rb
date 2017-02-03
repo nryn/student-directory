@@ -24,7 +24,9 @@ end
 
 def print(students)
   students.each_with_index do |student,ind|
-    puts "#{ind+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    if /^[Ss].*/ === student[:name]
+      puts "#{ind+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 
