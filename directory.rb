@@ -14,7 +14,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process($stdin.gets.chomp)
   end
 end
 
@@ -36,7 +36,7 @@ def process(selection)
 end
 
 def defaulter(str) # function which gets user input and defaults it if empty
-  str = gets[0..-2] # alternative to gets.chomp using range selection, from index 0 to the last-but-one character (removes the last return)
+  str = $stdin.gets[0..-2] # alternative to gets.chomp using range selection, from index 0 to the last-but-one character (removes the last return)
   if str.empty?
     str = "None provided"
   end
@@ -47,7 +47,7 @@ def input_students
   puts "Please enter the name of a student"
   puts "To quit, just hit return."
   # get the first name
-  name = gets[0..-2]
+  name = $stdin.gets[0..-2]
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
@@ -72,7 +72,7 @@ def input_students
     # get another name from the user
     puts "Please enter another student's name"
     puts "To quit, just hit return."
-    name = gets[0..-2]
+    name = $stdin.gets[0..-2]
   end
   # return array of students
   @students
@@ -141,9 +141,21 @@ def save_students
   file.close
 end
 
-def load_students
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    Exit
+  end
+end
+
+def load_students(filename = "students.csv")
   @students = []
-  file = File.open("students.csv", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, height, hobbies, birthplace = line.chomp.split(',')
       @students << {name: name, cohort: cohort.to_sym, height: height, hobbies: hobbies, birthplace: birthplace}
@@ -159,4 +171,5 @@ end
 #   print_footer(students)
 # end
 
+try_load_students
 interactive_menu
