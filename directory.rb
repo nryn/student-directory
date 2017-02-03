@@ -24,7 +24,7 @@ end
 
 def print(students)
   students.each_with_index do |student,ind|
-    if /^[Ss].*/ === student[:name]
+    if student[:name].length < 12
       puts "#{ind+1}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
