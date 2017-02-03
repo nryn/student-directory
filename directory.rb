@@ -1,28 +1,33 @@
-def interactive_menu
-  students = []
-  loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    selection = gets.chomp
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      print_header
-      printbymonth(students)
-      print_footer(students)
-    when "9"
-      exit
-    else
-      puts "I don't know what you meant, try again"
-    end
-  end
-end
-
+@students = [] # accessible to all methods
 $months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 $linewidth = 50
 $linespacer = ' '
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you meant, try again"
+  end
+end
 
 def defaulter(str) # function which gets user input and defaults it if empty
   str = gets[0..-2] # alternative to gets.chomp using range selection, from index 0 to the last-but-one character (removes the last return)
@@ -35,8 +40,6 @@ end
 def input_students
   puts "Please enter the name of a student"
   puts "To quit, just hit return."
-  # create empty array
-  students = []
   # get the first name
   name = gets[0..-2]
   # while the name is not empty, repeat this code
@@ -54,9 +57,9 @@ def input_students
     hobbies = defaulter(hobbies)
     puts "Please enter this student's country of birth."
     birthplace = defaulter(birthplace)
-    students << {name: name, cohort: cohort, height: height, hobbies: hobbies, birthplace: birthplace}
-    print "\nNow we have #{students.count} student"
-    unless students.length == 1
+    @students << {name: name, cohort: cohort, height: height, hobbies: hobbies, birthplace: birthplace}
+    print "\nNow we have #{@students.count} student"
+    unless @students.length == 1
       print "s"
     end;
     puts "."
@@ -66,7 +69,7 @@ def input_students
     name = gets[0..-2]
   end
   # return array of students
-  students
+  @students
 end
 
 def print_header
@@ -88,28 +91,36 @@ end
 #  end
 #end
 
-def printbymonth(students)
+def print_students_by_month
+  incrementer = 1
   $months.map do |month|
-    students.map do |student|
+    @students.map do |student|
       unless !student[:cohort].to_s.include? month.to_s
-        incrementer = 0
-        puts "#{incrementer+1}. #{student[:name]}"
+        puts "#{incrementer}. #{student[:name]}"
+        puts ""
         puts " Birthplace: #{student[:birthplace]} ".center($linewidth,$linespacer)
         puts " Height: #{student[:height]} ".center($linewidth,$linespacer)
         puts " Hobbies: #{student[:hobbies]} ".center($linewidth,$linespacer)
         puts " Cohort: #{student[:cohort].capitalize} ".center($linewidth,$linespacer)
+        puts ""
         incrementer += 1
       end
     end
   end
 end
 
-def print_footer(students)
-  print "\nOverall, we have #{students.count} great student"
-  unless students.length == 1
+def print_footer
+  print "\nOverall, we have #{@students.count} great student"
+  unless @students.length == 1
     print "s"
   end
   puts "."
+end
+
+def show_students
+  print_header
+  print_students_by_month
+  print_footer
 end
 
 # students = input_students
