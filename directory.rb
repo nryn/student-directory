@@ -63,7 +63,7 @@ def input_students
     hobbies = defaulter(hobbies)
     puts "Please enter this student's country of birth."
     birthplace = defaulter(birthplace)
-    @students << {name: name, cohort: cohort, height: height, hobbies: hobbies, birthplace: birthplace}
+    add_student_data(name, cohort, height, hobbies, birthplace)
     print "\nNow we have #{@students.count} student"
     unless @students.length == 1
       print "s"
@@ -141,6 +141,10 @@ def save_students
   file.close
 end
 
+def add_student_data(name, cohort, height, hobbies, birthplace)
+  @students << {name: name, cohort: cohort.to_sym, height: height, hobbies: hobbies, birthplace: birthplace}
+end
+
 def try_load_students
   filename = ARGV.first
   return if filename.nil?
@@ -158,7 +162,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, height, hobbies, birthplace = line.chomp.split(',')
-      @students << {name: name, cohort: cohort.to_sym, height: height, hobbies: hobbies, birthplace: birthplace}
+    add_student_data(name, cohort, height, hobbies, birthplace)
   end
   file.close
 end
