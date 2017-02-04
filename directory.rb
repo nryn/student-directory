@@ -25,6 +25,12 @@ def interactive_menu
   end
 end
 
+def ask(verb)
+  puts "Would you like to #{verb} a particular file?"
+  puts "Please enter the file path."
+  puts "To use the default, hit return."
+end
+
 def process(selection)
   system("clear")
   case selection
@@ -33,9 +39,7 @@ def process(selection)
   when "2"
     show_students
   when "3"
-    puts "Would you like to save to a particular file?"
-    puts "Please enter the file path."
-    puts "To use the default, hit return."
+    ask("save")
     print @prompt
     filename = gets.chomp
     system("clear")
@@ -45,9 +49,7 @@ def process(selection)
       save_students(filename)
     end
   when "4"
-    puts "Would you like to load a particular file?"
-    puts "Please enter the file path."
-    puts "To use the default, hit return."
+    ask("load")
     print @prompt
     filename = gets.chomp
     system("clear")
@@ -169,7 +171,7 @@ end
 
 def save_students(filename = "students.csv")
   # open file
-  file = File.open(filename, "w")
+  File.open(filename, "w") { |file|
   # iterate over students
   @students.each do |student|
     student_data = []
@@ -179,7 +181,7 @@ def save_students(filename = "students.csv")
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  file.close
+  } # end of File.open's block will close file automatically
   puts hr
   puts " Successfully Saved #{@students.count} Students ".center(@linewidth,'-')
   puts hr
@@ -212,12 +214,12 @@ end
 
 def load_students(filename = "students.csv")
   @students = []
-  file = File.open(filename, "r")
+  File.open(filename, "r") { |file|
   file.readlines.each do |line|
     data = line.chomp.split(',')
     add_student_data(data)
   end
-  file.close
+  }
   puts hr
   puts " Successfully Loaded #{@students.count} Students ".center(@linewidth,'-')
   puts hr
