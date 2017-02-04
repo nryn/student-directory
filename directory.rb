@@ -1,3 +1,4 @@
+require 'CSV'
 @students = [] # accessible to all methods
 @required_info = [:name,:cohort,:height,:hobbies,:birthplace] # add new symbols to this to extend the data collection
 @months = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
@@ -171,20 +172,19 @@ end
 
 def save_students(filename = "students.csv")
   # open file
-  File.open(filename, "w") { |file|
+  CSV.open(filename, "w") { |file|
   # iterate over students
   @students.each do |student|
     student_data = []
     student.each do |info|
       student_data << info[1]
     end
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    file << student_data
   end
   } # end of File.open's block will close file automatically
-  puts hr
+  hr
   puts " Successfully Saved #{@students.count} Students ".center(@linewidth,'-')
-  puts hr
+  hr
 end
 
 def student_hash_generator(data)
@@ -214,11 +214,8 @@ end
 
 def load_students(filename = "students.csv")
   @students = []
-  File.open(filename, "r") { |file|
-  file.readlines.each do |line|
-    data = line.chomp.split(',')
-    add_student_data(data)
-  end
+  CSV.foreach(filename, "r") { |row|
+    add_student_data(row)
   }
   puts hr
   puts " Successfully Loaded #{@students.count} Students ".center(@linewidth,'-')
