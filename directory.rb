@@ -33,9 +33,29 @@ def process(selection)
   when "2"
     show_students
   when "3"
-    save_students
+    puts "Would you like to save to a particular file?"
+    puts "Please enter the file path."
+    puts "To use the default, hit return."
+    print @prompt
+    filename = gets.chomp
+    system("clear")
+    if filename.empty?
+      save_students
+    else
+      save_students(filename)
+    end
   when "4"
-    load_students
+    puts "Would you like to load a particular file?"
+    puts "Please enter the file path."
+    puts "To use the default, hit return."
+    print @prompt
+    filename = gets.chomp
+    system("clear")
+    if filename.empty?
+      load_students
+    else
+      load_students(filename)
+    end
   when "9"
     exit
   else
@@ -147,9 +167,9 @@ def show_students
   print_footer
 end
 
-def save_students
+def save_students(filename = "students.csv")
   # open file
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # iterate over students
   @students.each do |student|
     student_data = []
